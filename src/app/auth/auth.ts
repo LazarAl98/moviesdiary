@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from './user.model';
+import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface AuthResponseData {
   idToken: string;
@@ -31,6 +33,15 @@ export class AuthService {
 
   get isUserAuthenticated(): boolean {
     return this._isUserAuthenticated;
+  }
+
+  register(user: UserData) {
+    return this.http
+      .post<AuthResponseData>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
+        { email: user.email, password: user.password, returnSecureToken: true },
+      )
+      .pipe(tap((userData) => this.setUser(userData)));
   }
 
   logOut() {
