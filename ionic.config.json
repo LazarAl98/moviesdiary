@@ -1,0 +1,7 @@
+{
+  "name": "moviestmdb",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
