@@ -1,0 +1,10 @@
+<ion-card button="true">
+  <img [src]="movie.posterUrl" [alt]="movie.title" />
+  <ion-card-header>
+    <ion-card-subtitle>
+      <ion-icon name="star" color="warning"></ion-icon>
+      {{ movie.voteAverage | number: "1.1-1" }}
+    </ion-card-subtitle>
+    <ion-card-title>{{ movie.title }}</ion-card-title>
+  </ion-card-header>
+</ion-card>

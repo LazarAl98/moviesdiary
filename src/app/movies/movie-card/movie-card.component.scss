@@ -1,0 +1,13 @@
+ion-card {
+  margin: 4px 0 12px;
+
+  img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+
+  ion-card-title {
+    font-size: 1rem;
+  }
+}
