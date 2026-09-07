@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Discover</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Search movies"
+      debounce="400"
+      (ionInput)="onSearch($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (isLoading) {
+  <div class="ion-text-center ion-padding">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  } @else {
+  <ion-grid>
+    <ion-row>
+      @for (movie of movies; track movie.id) {
+      <ion-col size="6" size-md="4" size-lg="3">
+        <app-movie-card
+          [movie]="movie"
+          [routerLink]="['/', 'movies', 'tabs', 'discover', movie.id]"
+        ></app-movie-card>
+      </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+  }
+</ion-content>
