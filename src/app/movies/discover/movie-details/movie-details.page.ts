@@ -43,7 +43,6 @@ import { RatingModalComponent } from '../../rating-modal/rating-modal.component'
     IonButton,
     IonItem,
     IonLabel,
-    ModalController,
     IonContent,
     IonSpinner,
     IonCard,
