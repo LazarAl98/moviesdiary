@@ -46,4 +46,22 @@ export class RatingModalComponent implements OnInit {
   ngOnInit() {
     addIcons({ close, star, 'star-outline': starOutline });
   }
+  onWatchedChange() {
+    if (!this.watched) {
+      this.myRating = null;
+    } else if (this.myRating === null) {
+      this.myRating = 3;
+    }
+  }
+
+  onCancel() {
+    this.modalCtrl.dismiss();
+  }
+
+  onSave() {
+    this.modalCtrl.dismiss(
+      { myRating: this.myRating, watched: this.watched },
+      'confirm',
+    );
+  }
 }
