@@ -15,7 +15,7 @@ import {
   IonTitle,
   IonToolbar,
   LoadingController,
-} from '@ionic/angular/';
+} from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth';
 

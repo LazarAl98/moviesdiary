@@ -6,7 +6,7 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star } from 'ionicons/icons';
 import { Movie } from '../movie.model';

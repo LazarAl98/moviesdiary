@@ -45,14 +45,6 @@ export class MoviesApiService {
       .pipe(map((m) => this.toMovie(m)));
   }
 
-  getMovieDetails(id: string) {
-    return this.http
-      .get<TmdbMovie>(`${environment.tmdbBaseUrl}/movie/${id}?language=en-US`, {
-        headers: this.headers,
-      })
-      .pipe(map((m) => this.toMovie(m)));
-  }
-
   private toMovie(m: TmdbMovie): Movie {
     return {
       id: m.id.toString(),

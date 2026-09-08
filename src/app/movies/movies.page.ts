@@ -5,7 +5,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { film, bookmark } from 'ionicons/icons';
 
