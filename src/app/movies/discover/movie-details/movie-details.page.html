@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/movies/tabs/discover"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (isLoading) {
+  <div class="ion-text-center">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  } @else if (movie) {
+  <ion-card>
+    <img [src]="movie.posterUrl" [alt]="movie.title" />
+    <ion-card-header>
+      <ion-card-subtitle>
+        {{ movie.releaseDate }} &middot;
+        <ion-icon name="star" color="warning"></ion-icon>
+        {{ movie.voteAverage | number: '1.1-1' }}
+      </ion-card-subtitle>
+      <ion-card-title>{{ movie.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>{{ movie.overview }}</ion-card-content>
+  </ion-card>
+
+  }
+</ion-content>
