@@ -28,6 +28,31 @@ export class MoviesApiService {
 
   constructor() {}
 
+  searchMovies(query: string) {
+    return this.http
+      .get<TmdbSearchResult>(
+        `${environment.tmdbBaseUrl}/search/movie?language=en-US&query=${encodeURIComponent(query)}`,
+        { headers: this.headers },
+      )
+      .pipe(map((res) => res.results.map((m) => this.toMovie(m))));
+  }
+
+  getMovieDetails(id: string) {
+    return this.http
+      .get<TmdbMovie>(`${environment.tmdbBaseUrl}/movie/${id}?language=en-US`, {
+        headers: this.headers,
+      })
+      .pipe(map((m) => this.toMovie(m)));
+  }
+
+  getMovieDetails(id: string) {
+    return this.http
+      .get<TmdbMovie>(`${environment.tmdbBaseUrl}/movie/${id}?language=en-US`, {
+        headers: this.headers,
+      })
+      .pipe(map((m) => this.toMovie(m)));
+  }
+
   private toMovie(m: TmdbMovie): Movie {
     return {
       id: m.id.toString(),

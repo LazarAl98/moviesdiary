@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
   {
+    path: 'movies',
+    loadChildren: () => import('./movies/movies.routes').then((m) => m.routes),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
-    redirectTo: '/log-in',
+    redirectTo: '/movies/tabs/discover',
     pathMatch: 'full',
   },
   {
@@ -15,10 +21,5 @@ export const routes: Routes = [
     path: 'log-in',
     loadComponent: () =>
       import('./auth/log-in/log-in.page').then((m) => m.LogInPage),
-  },
-  {
-    path: 'discover',
-    loadComponent: () =>
-      import('./movies/discover/discover.page').then((m) => m.DiscoverPage),
   },
 ];
