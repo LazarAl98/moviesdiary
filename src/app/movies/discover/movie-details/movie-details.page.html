@@ -26,5 +26,28 @@
     <ion-card-content>{{ movie.overview }}</ion-card-content>
   </ion-card>
 
-  }
+  @if (watchlistEntry) {
+  <ion-item lines="none">
+    <ion-icon
+      slot="start"
+      [name]="watchlistEntry.watched ? 'checkmark-circle' : 'time-outline'"
+      [color]="watchlistEntry.watched ? 'success' : 'medium'"
+    ></ion-icon>
+    <ion-label>
+      {{ watchlistEntry.watched ? 'Watched' : 'Plan to watch' }} &middot; my
+      rating: {{ watchlistEntry.myRating ?? '-' }}/5
+    </ion-label>
+  </ion-item>
+
+  <ion-button expand="block" color="warning" (click)="onAddOrEdit()">
+    Edit
+  </ion-button>
+  <ion-button expand="block" color="danger" fill="outline" (click)="onRemove()">
+    Remove from watchlist
+  </ion-button>
+  } @else {
+  <ion-button expand="block" color="primary" (click)="onAddOrEdit()">
+    Add to watchlist
+  </ion-button>
+  } }
 </ion-content>
