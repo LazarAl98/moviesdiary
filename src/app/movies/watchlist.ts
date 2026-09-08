@@ -28,6 +28,29 @@ export class WatchlistService {
 
   constructor() {}
 
+  // Watchlista samo za ulogovanog korisnika
+  getWatchlist() {
+    return this.http
+      .get<{
+        [key: string]: WatchlistItemData;
+      }>(
+        `${environment.firebaseRDBUrl}/watchlist.json?auth=${this.authService.getToken()}` +
+          `&orderBy="userId"&equalTo="${this.authService.getUserId()}"`,
+      )
+      .pipe(
+        map((data) => {
+          const items: WatchlistItem[] = [];
+          for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+              items.push({ id: key, ...data[key] });
+            }
+          }
+          return items;
+        }),
+        tap((items) => this._items.next(items)),
+      );
+  }
+
   //dodavanje filma u watchlist, cuva se referenca i ocena
   addToWatchlist(movie: Movie, myRating: number | null, watched: boolean) {
     const userId = this.authService.getUserId();
@@ -57,5 +80,30 @@ export class WatchlistService {
           ),
         ),
       );
+  }
+
+  //UPDATE - promena licne ocene / watched statusa
+  updateItem(id: string, myRating: number | null, watched: boolean) {
+    return this.items.pipe(
+      take(1),
+      switchMap((items) => {
+        const existing = items.find((i) => i.id === id)!;
+        const updated: WatchlistItem = { ...existing, myRating, watched };
+
+        return this.http
+          .put(
+            `${environment.firebaseRDBUrl}/watchlist/${id}.json?auth=${this.authService.getToken()}`,
+            updated,
+          )
+          .pipe(
+            tap(() => {
+              const updatedItems = items.map((i) =>
+                i.id === id ? updated : i,
+              );
+              this._items.next(updatedItems);
+            }),
+          );
+      }),
+    );
   }
 }
