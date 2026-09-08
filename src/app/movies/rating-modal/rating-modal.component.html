@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item lines="none">
+    <ion-toggle [(ngModel)]="watched" (ionChange)="onWatchedChange()"
+      >Watched</ion-toggle
+    >
+  </ion-item>
+
+  @if (watched) {
+    <ion-item lines="none">
+      <ion-label>My rating: {{ myRating }}/5</ion-label>
+    </ion-item>
+
+    <ion-range
+      [(ngModel)]="myRating"
+      min="1"
+      max="5"
+      step="1"
+      snaps="true"
+      ticks="true"
+      color="warning"
+    >
+      <ion-icon slot="start" name="star-outline"></ion-icon>
+      <ion-icon slot="end" name="star"></ion-icon>
+    </ion-range>
+  } @else {
+    <p class="hint">
+      Kad označiš da si pogledao/la film, moći ćeš da ga oceniš.
+    </p>
+  }
+
+  <ion-button expand="block" color="primary" (click)="onSave()">
+    Save
+  </ion-button>
+</ion-content>
