@@ -3,6 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import {
   IonButton,
   IonButtons,
+  IonAvatar,
+  IonSpinner,
   IonContent,
   IonHeader,
   IonIcon,
@@ -16,10 +18,11 @@ import {
   ViewWillEnter,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircle } from 'ionicons/icons';
+import { personCircle, camera } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 import { ProfileService } from './profile';
 import { UserProfile } from '../user-profile.model';
+const MAX_AVATAR_BYTES = 500 * 1024;
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +34,8 @@ import { UserProfile } from '../user-profile.model';
     IonToolbar,
     IonTitle,
     IonButtons,
+    IonAvatar,
+    IonSpinner,
     IonMenuButton,
     IonContent,
     IonIcon,
@@ -46,11 +51,12 @@ export class ProfilePage implements OnInit, ViewWillEnter, OnDestroy {
   toastCtrl: ToastController = inject(ToastController);
 
   profile: UserProfile | null = null;
+  isUploading = false;
 
   private sub = new Subscription();
 
   constructor() {
-    addIcons({ 'person-circle': personCircle });
+    addIcons({ 'person-circle': personCircle, camera });
   }
 
   ionViewWillEnter() {
@@ -65,6 +71,44 @@ export class ProfilePage implements OnInit, ViewWillEnter, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  //slika se cuva kao data URL (base64) direktno u RTDB
+  async onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    if (file.size > MAX_AVATAR_BYTES) {
+      const toast = await this.toastCtrl.create({
+        message: 'Slika je prevelika, izaberi jednu do 500 KB.',
+        duration: 2500,
+        color: 'warning',
+      });
+      await toast.present();
+      return;
+    }
+
+    this.isUploading = true;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      this.profileService.updateAvatar(dataUrl).subscribe(() => {
+        this.isUploading = false;
+      });
+    };
+
+    reader.onerror = async () => {
+      this.isUploading = false;
+      const toast = await this.toastCtrl.create({
+        message: 'Učitavanje slike nije uspelo.',
+        duration: 2000,
+        color: 'danger',
+      });
+      await toast.present();
+    };
+
+    reader.readAsDataURL(file);
   }
 
   onSave(form: NgForm) {
