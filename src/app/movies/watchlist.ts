@@ -82,7 +82,7 @@ export class WatchlistService {
       );
   }
 
-  //UPDATE - promena licne ocene / watched statusa
+  // promena licne ocene / watched statusa
   updateItem(id: string, myRating: number | null, watched: boolean) {
     return this.items.pipe(
       take(1),
@@ -105,5 +105,19 @@ export class WatchlistService {
           );
       }),
     );
+  }
+  //uklanjanje filma iz watchliste
+  removeFromWatchlist(id: string) {
+    return this.http
+      .delete(
+        `${environment.firebaseRDBUrl}/watchlist/${id}.json?auth=${this.authService.getToken()}`,
+      )
+      .pipe(
+        switchMap(() => this.items),
+        take(1),
+        tap((items) => {
+          this._items.next(items.filter((i) => i.id !== id));
+        }),
+      );
   }
 }
