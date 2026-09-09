@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  AlertController,
   IonButton,
   IonCol,
   IonContent,
@@ -47,6 +48,7 @@ export class RegisterPage {
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
   loadingCtrl: LoadingController = inject(LoadingController);
+  alertCtrl: AlertController = inject(AlertController);
 
   registerForm = new FormGroup({
     name: new FormControl<string | null>(null, Validators.required),
@@ -73,9 +75,26 @@ export class RegisterPage {
         loadingEl.dismiss();
         this.router.navigateByUrl('/movies/tabs/discover');
       },
-      error: (err) => {
+      error: async (err) => {
         loadingEl.dismiss();
         console.error(err);
+
+        const code = err.error?.error?.message;
+        let message = 'Pokušaj ponovo.';
+        if (code === 'EMAIL_EXISTS') {
+          message = 'Ovaj email je već registrovan.';
+        } else if (code === 'INVALID_EMAIL') {
+          message = 'Email adresa nije validna.';
+        } else if (code) {
+          message = `Firebase greška: ${code}`;
+        }
+
+        const alert = await this.alertCtrl.create({
+          header: 'Registracija nije uspela',
+          message,
+          buttons: ['OK'],
+        });
+        await alert.present();
       },
     });
   }
