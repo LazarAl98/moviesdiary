@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Watchlist</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-segment [value]="filter" (ionChange)="onFilterChange($event)">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="toWatch">
+        <ion-label>To watch</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="watched">
+        <ion-label>Watched</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-select
+      label="Sort by"
+      interface="popover"
+      [value]="sortBy"
+      (ionChange)="onSortChange($event)"
+    >
+      <ion-select-option value="title">Title (A-Z)</ion-select-option>
+      <ion-select-option value="rating"
+        >My rating (highest first)</ion-select-option
+      >
+    </ion-select>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (displayedItems.length === 0) {
+  <div class="ion-text-center ion-padding empty-state">
+    <ion-icon name="film-outline"></ion-icon>
+    <p>Nema filmova za ovaj filter.</p>
+  </div>
+  }
+
+  <ion-list>
+    @for (item of displayedItems; track item.id) {
+    <ion-item-sliding>
+      <ion-item
+        [routerLink]="['/', 'movies', 'tabs', 'discover', item.movieId]"
+      >
+        <ion-avatar slot="start">
+          <ion-img [src]="item.posterUrl"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ item.title }}</h2>
+          <p>
+            {{ item.watched ? 'Watched' : 'Plan to watch' }} &middot; {{
+            item.myRating ?? '-' }}/5
+          </p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="onRemove(item.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    }
+  </ion-list>
+</ion-content>

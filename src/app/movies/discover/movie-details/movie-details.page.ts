@@ -19,6 +19,7 @@ import {
   IonSpinner,
   IonTitle,
   IonToolbar,
+  LoadingController,
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -59,7 +60,7 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
   moviesApi: MoviesApiService = inject(MoviesApiService);
   watchlistService: WatchlistService = inject(WatchlistService);
   modalCtrl: ModalController = inject(ModalController);
-
+  loadingCtrl: LoadingController = inject(LoadingController);
   movie?: Movie;
   watchlistEntry: WatchlistItem | null = null;
   isLoading = false;
@@ -133,5 +134,18 @@ export class MovieDetailsPage implements OnInit, OnDestroy {
           .subscribe();
       }
     });
+  }
+
+  async onRemove() {
+    if (!this.watchlistEntry) return;
+
+    const loading = await this.loadingCtrl.create({ message: 'Removing...' });
+    await loading.present();
+
+    this.watchlistService
+      .removeFromWatchlist(this.watchlistEntry.id)
+      .subscribe(async () => {
+        await loading.dismiss();
+      });
   }
 }

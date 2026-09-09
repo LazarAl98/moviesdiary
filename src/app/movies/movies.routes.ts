@@ -12,6 +12,11 @@ export const routes: Routes = [
           import('./discover/discover.routes').then((m) => m.routes),
       },
       {
+        path: 'watchlist',
+        loadComponent: () =>
+          import('./watchlist/watchlist.page').then((m) => m.WatchlistPage),
+      },
+      {
         path: '',
         redirectTo: '/movies/tabs/discover',
         pathMatch: 'full',
