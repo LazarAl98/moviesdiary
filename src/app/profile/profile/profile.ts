@@ -51,4 +51,8 @@ export class ProfileService {
       }),
     );
   }
+
+  updateAvatar(avatarUrl: string) {
+    return this.saveProfile((current) => ({ ...current, avatarUrl }));
+  }
 }
