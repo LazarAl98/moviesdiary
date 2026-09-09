@@ -60,7 +60,9 @@ export class LogInPage {
     this.authService.logIn(logInForm.value).subscribe({
       next: () => {
         loadingEl.dismiss();
-        this.router.navigateByUrl('/movies/tabs/discover');
+        this.router.navigateByUrl('/movies/tabs/discover', {
+          replaceUrl: true,
+        });
       },
       error: async (err) => {
         loadingEl.dismiss();
