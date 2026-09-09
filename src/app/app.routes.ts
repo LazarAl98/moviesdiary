@@ -8,6 +8,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import('./profile/profile/profile.page').then((m) => m.ProfilePage),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: '/movies/tabs/discover',
     pathMatch: 'full',
@@ -21,9 +27,5 @@ export const routes: Routes = [
     path: 'log-in',
     loadComponent: () =>
       import('./auth/log-in/log-in.page').then((m) => m.LogInPage),
-  },
-  {
-    path: 'profile',
-    loadComponent: () => import('./profile/profile/profile.page').then( m => m.ProfilePage)
   },
 ];
