@@ -1,13 +1,67 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="avatar-wrap ion-text-center">
+    <ion-avatar (click)="fileInput.click()">
+      @if (profile?.avatarUrl) {
+      <img [src]="profile!.avatarUrl!" />
+      } @else {
+      <ion-icon name="person-circle"></ion-icon>
+      } @if (isUploading) {
+      <div class="avatar-overlay">
+        <ion-spinner color="light"></ion-spinner>
+      </div>
+      }
+    </ion-avatar>
+
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      hidden
+      (change)="onFileSelected($event)"
+    />
+
+    <p>
+      <ion-icon name="camera"></ion-icon>
+      Klikni na avatar da promeniš sliku
+    </p>
+  </div>
+
+  <form #profileForm="ngForm" (ngSubmit)="onSave(profileForm)">
+    <ion-item>
+      <ion-input
+        label="Name"
+        labelPlacement="floating"
+        name="name"
+        [ngModel]="profile?.name"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea
+        label="Bio"
+        labelPlacement="floating"
+        name="bio"
+        rows="4"
+        [ngModel]="profile?.bio"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      color="primary"
+      [disabled]="profileForm.invalid"
+      >Save</ion-button
+    >
+  </form>
 </ion-content>

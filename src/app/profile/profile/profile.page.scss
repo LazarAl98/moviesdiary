@@ -1,0 +1,32 @@
+.avatar-wrap {
+  margin-bottom: 16px;
+
+  ion-avatar {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 8px;
+    cursor: pointer;
+
+    ion-icon {
+      width: 100%;
+      height: 100%;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .avatar-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 0.85rem;
+  }
+}
