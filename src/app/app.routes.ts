@@ -22,4 +22,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./auth/log-in/log-in.page').then((m) => m.LogInPage),
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./profile/profile/profile.page').then( m => m.ProfilePage)
+  },
 ];
