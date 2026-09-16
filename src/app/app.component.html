@@ -1,5 +1,9 @@
 <ion-app>
-  <ion-menu side="start" contentId="main">
+  <ion-menu
+    side="start"
+    contentId="main"
+    [disabled]="!authService.isUserAuthenticated"
+  >
     <ion-header>
       <ion-toolbar>
         <ion-title>Movies diary</ion-title>
